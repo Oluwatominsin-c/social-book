@@ -109,7 +109,7 @@ def settings(request):
         if not image:
             image = user_profile.profileimg
         if not firstname:
-            messages.info(request, "Frst name cannot be blank")
+            messages.info(request, "First name cannot be blank")
             return redirect("settings")
         if not lastname:
             messages.info(request, "Last name cannot be blank")
