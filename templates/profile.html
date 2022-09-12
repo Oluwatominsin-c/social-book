@@ -142,7 +142,23 @@
                 <div class="col-lg-6">
                   <div class="central-meta">
                     <ul class="photos">
+                      {% for post in posts %}
                       <li>
+                        <a
+                          class="strip"
+                          href="{{post.image.url}}"
+                          title="{{post.caption}}"
+                          data-strip-group="mygroup"
+                          data-strip-group-options="loop: false"
+                        >
+                          <img
+                            src="{{post.image.url}}"
+                            style="height: 250px; width: 300px"
+                            alt=""
+                        /></a>
+                      </li>
+                      {% endfor %}
+                      <!-- <li>
                         <a
                           class="strip"
                           href="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
@@ -170,22 +186,7 @@
                             style="height: 250px; width: 300px"
                             alt=""
                         /></a>
-                      </li>
-
-                      <li>
-                        <a
-                          class="strip"
-                          href="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
-                          title=""
-                          data-strip-group="mygroup"
-                          data-strip-group-options="loop: false"
-                        >
-                          <img
-                            src="https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png"
-                            style="height: 250px; width: 300px"
-                            alt=""
-                        /></a>
-                      </li>
+                      </li> -->
                     </ul>
                     <!--<div class="lodmore"><button class="btn-view btn-load-more"></button></div>-->
                   </div>
