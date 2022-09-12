@@ -31,7 +31,18 @@
                 ><u><a href="/">Home</a></u></b
               ></span
             >
-            <span style="color: white; font-size: 27px"><b>11 Post</b></span>
+            {% if len_posts == 0 %}
+            <span style="color: white; font-size: 27px"><b>No Post</b></span>
+            {% elif len_posts == 1 %}
+            <span style="color: white; font-size: 27px"
+              ><b>{{len_posts}} Post</b></span
+            >
+            {% else %}
+            <span style="color: white; font-size: 27px"
+              ><b>{{len_posts}} Posts</b></span
+            >
+            {% endif %}
+
             <span style="color: white; font-size: 27px"
               ><b>1.7m followers</b></span
             >
