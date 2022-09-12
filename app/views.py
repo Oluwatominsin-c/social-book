@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post
+from .models import Profile, Post, LikePost
 
 import re
 
@@ -158,3 +158,41 @@ def post(request):
         return redirect("/")
     else:
         return redirect('/')
+
+@login_required(login_url="signin")
+def profile(request, pk):
+    user_object = User.objects.get(username=pk)
+    profile_object = Profile.objects.get(user=user_object)
+    posts = Post.objects.filter(user=pk)
+    len_posts = len(posts)
+
+    context = {
+        "user_object": user_object,
+        "profile_object": profile_object,
+        "posts": posts,
+        "len_posts": len_posts
+    }
+    return render(request, "profile.html", context)
+
+
+def like_post(request):
+    username = request.user.username
+    post_id = request.GET.get("post_id")
+
+    post = Post.objects.get(id=post_id)
+    
+    like_filter = LikePost.objects.filter(post_id=post_id, username=username).first()
+    
+    if not like_filter:
+        new_like = LikePost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        
+        post.likes += 1
+        post.save()
+        return redirect("/")
+    else:
+        like_filter.delete()
+
+        post.likes -= 1
+        post.save()
+        return redirect("/")
