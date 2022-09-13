@@ -169,11 +169,12 @@ def profile(request, pk):
     follower = request.user.username
     user = pk
 
-    if FollowersCount.objects.filter(follower=follower, user=user).exists():
+    if FollowersCount.objects.filter(follower=follower, user=user).first():
         button = "Unfollow"
     
     else:
         button = "Follow"
+        
     follwers_count = len(FollowersCount.objects.filter(user=user))
     following_count = len(FollowersCount.objects.filter(follower=user))
     context = {
@@ -193,9 +194,9 @@ def follow(request):
         user = request.POST["user"]
         follower = request.POST["follower"]
 
-        result = FollowersCount.objects.filter(user=user, follower=follower).first()
-        if result:
-            result.delete()
+        if FollowersCount.objects.filter(user=user, follower=follower).first():
+            delete_follower = FollowersCount.objects.get(user=user, follower=follower)
+            delete_follower.delete()
             return redirect("profile/" + user)
         else:
             new_follower = FollowersCount.objects.create(user=user, follower=follower)
