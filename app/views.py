@@ -20,9 +20,19 @@ def isValid(email):
 def index(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = Profile.objects.get(user=user_object)
-
     posts = Post.objects.all()
-    return render(request, "index.html", {"user_profile": user_profile, "posts": posts})
+    users = User.objects.all()
+
+    new_users = [i for i in users if not FollowersCount.objects.filter(follower=user_object.username, user=i.username).exists()]
+    new_users = [i for i in new_users if i != user_object]
+    context = {
+        "user_profile": user_profile,
+        "posts": posts,
+        "new_users": new_users,
+        }
+
+    
+    return render(request, "index.html", context)
 
 def signup(request):
     if request.method == "POST":
