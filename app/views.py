@@ -166,11 +166,24 @@ def profile(request, pk):
     posts = Post.objects.filter(user=pk)
     len_posts = len(posts)
 
+    follower = request.user.username
+    user = pk
+
+    if FollowersCount.objects.filter(follower=follower, user=user).exists():
+        button = "Unfollow"
+    
+    else:
+        button = "Follow"
+    follwers_count = len(FollowersCount.objects.filter(user=user))
+    following_count = len(FollowersCount.objects.filter(follower=user))
     context = {
         "user_object": user_object,
         "profile_object": profile_object,
         "posts": posts,
-        "len_posts": len_posts
+        "len_posts": len_posts,
+        "button": button,
+        "follwers_count": follwers_count,
+        "following_count": following_count
     }
     return render(request, "profile.html", context)
 
