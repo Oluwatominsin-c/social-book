@@ -4,8 +4,10 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowersCount
-
+from django.forms.models import model_to_dict
 import re
+import pprintpp
+import json
 
 # Create your views here.
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
@@ -21,14 +23,35 @@ def index(request):
     user_object = User.objects.get(username=request.user.username)
     user_profile = Profile.objects.get(user=user_object)
     posts = Post.objects.all()
-    users = User.objects.all()
 
-    new_users = [i for i in users if not FollowersCount.objects.filter(follower=user_object.username, user=i.username).exists()]
-    new_users = [i for i in new_users if i != user_object]
+    feed = []
+    for i in posts:
+        if FollowersCount.objects.filter(user=i.user, follower=request.user.username).exists():
+            feed.append(i)
+        if i.user == request.user.username:
+            feed.append(i)
+    # users = User.objects.all()
+
+    # dict_user = model_to_dict(user_object)
+    # dict_obj = list(map(model_to_dict, users))
+    # # print(dict_obj)
+
+    # new_users = [i for i in dict_obj if not FollowersCount.objects.filter(follower=user_object.username, user=i["username"]).exists() if i["username"] != dict_user["username"]]
+    # # pprintpp.pprint(new_users)
+
+    # follower = [len(FollowersCount.objects.filter(user=i["username"])) for i in new_users
+    
+    # ]
+    # print(follower)
+
+    # new = {}
+    # for i in range(len(follower)):
+    #     new[new_users[i]["username"]] = json.dumps({"name": new_users[i]["username"], "follower": follower[i]})
+    # pprintpp.pprint(new)
+
     context = {
         "user_profile": user_profile,
-        "posts": posts,
-        "new_users": new_users,
+        "posts": feed
         }
 
     
