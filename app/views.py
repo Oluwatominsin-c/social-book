@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post, LikePost
+from .models import Profile, Post, LikePost, FollowersCount
 
 import re
 
@@ -174,6 +174,23 @@ def profile(request, pk):
     }
     return render(request, "profile.html", context)
 
+@login_required(login_url="signin")
+def follow(request):
+    if request.method == "POST":
+        user = request.POST["user"]
+        follower = request.POST["follower"]
+
+        result = FollowersCount.objects.filter(user=user, follower=follower).first()
+        if result:
+            result.delete()
+            return redirect("profile/" + user)
+        else:
+            new_follower = FollowersCount.objects.create(user=user, follower=follower)
+            new_follower.save()
+            return redirect("profile/" + user)
+
+    else:
+        return redirect("/")
 
 def like_post(request):
     username = request.user.username
