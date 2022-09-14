@@ -262,3 +262,5 @@ def like_post(request):
         post.save()
         return redirect("/")
 
+def search(request):
+    pass
