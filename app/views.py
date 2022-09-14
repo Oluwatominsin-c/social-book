@@ -239,6 +239,7 @@ def follow(request):
     else:
         return redirect("/")
 
+@login_required(login_url="signin")
 def like_post(request):
     username = request.user.username
     post_id = request.GET.get("post_id")
@@ -260,3 +261,4 @@ def like_post(request):
         post.likes -= 1
         post.save()
         return redirect("/")
+
