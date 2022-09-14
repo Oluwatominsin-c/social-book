@@ -263,4 +263,4 @@ def like_post(request):
         return redirect("/")
 
 def search(request):
-    pass
+    return render(request, "search.html")
