@@ -262,5 +262,6 @@ def like_post(request):
         post.save()
         return redirect("/")
 
+@login_required(login_url="signin")
 def search(request):
     return render(request, "search.html")
