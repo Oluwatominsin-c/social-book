@@ -8,20 +8,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'favicon.png' %}" rel="icon" type="image/png">
-    <title>Home - {{user.username}}</title>
+    <title>Home</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
 
             <header>
                 <div class="header_inner">
-                    <form action="">
+                    <form action="/search" method="POST">
+                    {% csrf_token %}
                     <div class="left-side">
                         <!-- Logo -->
                         <div id="logo" class=" uk-hidden@s">
@@ -35,20 +38,18 @@
                         </div>-->
 
                         <!-- <div class="header_search"> -->
-                            <input type="text" name="username" placeholder="Search for username..">
-                            <button type="submit"></button>
-                            
-                            <!-- </div> -->
-                        </div>
+                            <input type="text" name="username" placeholder="Search for username..">&nbsp; &nbsp;
+                            <button type="submit"><i class="fa fa-search fa-1x"></i></button>
+                        <!-- </div> -->
 
                     </div>
-                </form>
+                    </form>
                     <div class="right-side lg:pr-4">
                          <!-- upload -->
                         <a href="#"
                             class="bg-pink-500 flex font-bold hidden hover:bg-pink-600 hover:text-white inline-block items-center lg:block max-h-10 mr-4 px-4 py-2 rounded shado text-white">
                             <ion-icon name="add-circle" class="-mb-1
-                             mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload Pics 
+                             mr-1 opacity-90 text-xl uilus-circle"></ion-icon> Upload Pics
                         </a>
                          <!-- upload dropdown box -->
                         <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small" class="header_dropdown">
@@ -59,8 +60,6 @@
                             </div>
     
                             <!-- notification contents -->
-           
-
                             <div class="flex justify-center flex-center text-center">
     
                                 <div class="flex flex-col choose-upload text-center">
@@ -72,25 +71,25 @@
                                         </svg>
                                     </div>
 
-                                    <form action="post" method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                    <p class="my-3 leading-6"> Upload Pics <br> 
+                                    <form action="upload" method="POST" enctype="multipart/form-data" >
+                                    {% csrf_token %}
+                                    <p class="my-3 leading-6"> Upload pics
                                     </p>
                                     <div>
                                         <input type="file" name="image_upload">
                                         <!-- <a href="#" class="button soft-warning small"> Choose file</a> -->
-                                        <textarea class="button soft-warning small" name="caption" placeholder="Caption..."></textarea>
+                                        <textarea class="button soft-warning small" name="caption" placeholder="caption..." ></textarea>
                                         <br>
-                                        <button class="button bg-blue-700" type="submit">Upload</button>
+                                        <button class="button bg-blue-700" type="submit" >Upload</button>
                                     </div>
-                                </form>
-    
-                                    <a href="#" class="uk-text-muted mt-3 uk-link"
+                                    </form>
+
+                                    <!-- <a href="#" class="uk-text-muted mt-3 uk-link"
                                         uk-toggle="target: .choose-upload ;  animation: uk-animation-slide-right-small, uk-animation-slide-left-medium; queued: true">
-                                         </a>
+                                        Or Import Video </a> -->
                                 </div>
     
-                                <!-- <div class="uk-flex uk-flex-column choose-upload" hidden>
+                                <div class="uk-flex uk-flex-column choose-upload" hidden>
                                     <div class="mx-auto flex flex-col h-24 items-center justify-center relative w-full rounded-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-12">
                                             <path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd" />
@@ -106,9 +105,9 @@
                                     </form>
                                     <a href="#" class="uk-text-muted mt-3 uk-link"
                                         uk-toggle="target: .choose-upload ; animation: uk-animation-slide-left-small, uk-animation-slide-right-medium; queued: true">
-                                       </a>
-                                </div> -->
-                                
+                                        Or Upload Video </a>
+                                </div>
+    
                             </div>
                             <div class="px-4 py-3 -mx-5 -mb-4 mt-5 border-t text-sm">
                                 Your Image size Must be Maxmium 999MB
@@ -138,7 +137,6 @@
                                     </a>
                                 </li>
                                 
-
                             </ul>
                             <a href="#" class="see-all">See all</a>
                         </div> -->
@@ -164,8 +162,6 @@
                                     </a>
                                 </li>
                                 
-
-
                             </ul>
                             <a href="#" class="see-all">See all</a>
                         </div> -->
@@ -177,9 +173,7 @@
                         </a>
                         <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
                             <ul>
-                                <li><a href="settings"> Account setting </a> </li>
-                                <!-- <li><a href="explore.html">explore </a> </li>
-                                <li><a href="#"> Help </a> </li> -->
+                                <li><a href="/settings"> Account setting </a> </li>
                                 <li><a href="logout"> Log Out</a></li>
                             </ul>
                         </div>
@@ -198,51 +192,51 @@
                     <div class="space-y-5 flex-shrink-0 lg:w-7/12">
 
                         <!-- post 1-->
+
                         {% for post in posts reversed %}
                         <div class="bg-white shadow rounded-md  -mx-2 lg:mx-0">
-                            
-                            
+    
                             <!-- post header-->
                             <div class="flex justify-between items-center px-4 py-3">
                                 <div class="flex flex-1 items-center space-x-4">
-                                    <a href="profile/{{post.user}}">
+                                    <!-- <a href="#">
                                         <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-0.5 rounded-full">  
-                                            <img src="{{ user_profile.profileimg.url }}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
+                                            <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
                                         </div>
-                                    </a>
-                                    <a href="profile/{{post.user}}"><span class="block capitalize font-semibold "> @{{post.user}} </span></a>
+                                    </a> -->
+                                    <span class="block font-semibold "><a href="/profile/{{post.user}}">@{{post.user}}</a></span>
                                 </div>
                               <div>
                                 <a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 "></i> </a>
                                 <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100  " uk-drop="mode: hover;pos: top-right">
                               
                                     <ul class="space-y-1">
-                                      <li> 
+                                      <!-- <li> 
                                           <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
                                            <i class="uil-share-alt mr-1"></i> Share
                                           </a> 
-                                      </li>
-                                      <li> 
+                                      </li> -->
+                                      <!-- <li> 
                                           <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
                                            <i class="uil-edit-alt mr-1"></i>  Edit Post 
                                           </a> 
-                                      </li>
-                                      <li> 
+                                      </li> -->
+                                      <!-- <li> 
                                           <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
                                            <i class="uil-comment-slash mr-1"></i>   Disable comments
                                           </a> 
-                                      </li> 
-                                      <li> 
+                                      </li>  -->
+                                      <!-- <li> 
                                           <a href="#" class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md ">
                                            <i class="uil-favorite mr-1"></i>  Add favorites 
                                           </a> 
-                                      </li>
-                                      <li>
+                                      </li> -->
+                                      <!-- <li>
                                         <hr class="-mx-2 my-2 ">
-                                      </li>
+                                      </li> -->
                                       <li> 
                                           <a href="#" class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md ">
-                                           <i class="uil-trash-alt mr-1"></i>  Delete
+                                           <i class="uil-trash-alt mr-1"></i>  Delete Post
                                           </a> 
                                       </li>
                                     </ul>
@@ -250,11 +244,10 @@
                                 </div>
                               </div>
                             </div>
-                            
     
                             <div uk-lightbox>
                                 <a href="{{post.image.url}}">  
-                                    <img  src="{{post.image.url}}" style="height: 480px; width: 100%" alt="">
+                                    <img src="{{post.image.url}}" alt="">
                                 </a>
                             </div>
                             
@@ -267,22 +260,16 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
                                                 <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
                                             </svg>
-                                            {% if post.likes == 0 %}
-
+                                            {% if post.no_of_likes == 0 %}
                                             <p>No likes</p>
-
-                                            {% elif post.likes == 1 %}
-
-                                            <p>Liked by 1 person</p>
-
+                                            {% elif post.no_of_likes == 1 %}
+                                            <p>Liked by {{post.no_of_likes}} person</p>
                                             {% else %}
-
-                                            <p>{{post.likes}} likes</p>
-
+                                            <p>Liked by {{post.no_of_likes}} people</p>
                                             {% endif %}
                                         </div>
+                                        
                                     </a>
-
                                     <!-- <a href="#" class="flex items-center space-x-2">
                                         <div class="p-2 rounded-full text-black">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="25" height="25" class="">
@@ -296,12 +283,6 @@
                                         
                                     </a>
                                 </div>
-
-                                <p> 
-                                    {{post.caption}}
-                                </p>
-
-
                                 <!-- <div class="flex items-center space-x-3"> 
                                     <div class="flex items-center">
                                         <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" alt="" class="w-6 h-6 rounded-full border-2 border-white ">
@@ -312,6 +293,10 @@
                                         Liked <strong> taiye</strong> and <strong> 209 Others </strong>
                                     </div>
                                 </div> -->
+
+                                <p>
+                                    <a href="/profile/{{post.user}}"><strong>{{post.user}}</strong></a> {{post.caption}}
+                                </p>
 
                                 <!-- <div class="border-t pt-4 space-y-4 ">
                                     <div class="flex">
@@ -348,7 +333,8 @@
     
                         </div>
                         {% endfor %}
-                       
+    
+                        
 
 
                     </div>
@@ -360,64 +346,26 @@
 
                             <div class="bg-gray-50  border-b border-gray-100 flex items-baseline justify-between py-4 px-6 ">
                                 <h2 class="font-semibold text-lg">Users You Can Follow</h2>
-                                <a href="#"> Refresh</a>
+                                <!-- <a href="#"> Refresh</a> -->
                             </div>
                            
                             <div class="divide-gray-300 divide-gray-50 divide-opacity-50 divide-y px-4 ">
-                                {% for i in new %}
 
+                                {% for suggestion in suggestions_username_profile_list %}
                                 <div class="flex items-center justify-between py-3">
                                     <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
+                                        <a href="/profile/{{suggestion.user}}">
+                                            <img src="{{suggestion.profileimg.url}}" class="bg-gray-200 rounded-full w-10 h-10">
                                         </a>
                                         <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> {{i.name}} </span>
-                                            <span class="block capitalize text-sm"> {{i.follower}} followers </span>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-
-                                </div>
-                                {% endfor %}
-
-                                <!-- <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-1.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> taiye </span>
-                                            <span class="block capitalize text-sm"> New user </span>
-                                        </div>
-                                    </div> -->
-                                    <!-- <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div>
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-5.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> kayode </span>
-                                            <span class="block capitalize text-sm"> 20.7k followers </span>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div>
-                                <div class="flex items-center justify-between py-3">
-                                    <div class="flex flex-1 items-center space-x-4">
-                                        <a href="profile.html">
-                                            <img src="{% static 'assets/images/avatars/avatar-7.jpg' %}" class="bg-gray-200 rounded-full w-10 h-10">
-                                        </a>
-                                        <div class="flex flex-col">
-                                            <span class="block capitalize font-semibold"> faith_do </span>
-                                            <span class="block capitalize text-sm"> 100.5k followers </span>
+                                            <span class="block capitalize font-semibold"> {{suggestion.user}} </span>
+                                            <span class="block capitalize text-sm"> {{suggestion.bio}} </span>
                                         </div>
                                     </div>
                                     
-                                    <a href="#" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> Follow </a>
-                                </div> -->
+                                    <a href="/profile/{{suggestion.user}}" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 "> View User </a>
+                                </div>
+                                {% endfor %}
 
                             </div>
 
