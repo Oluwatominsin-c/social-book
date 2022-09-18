@@ -71,7 +71,7 @@
                                         </svg>
                                     </div>
 
-                                    <form action="upload" method="POST" enctype="multipart/form-data" >
+                                    <form action="post" method="POST" enctype="multipart/form-data" >
                                     {% csrf_token %}
                                     <p class="my-3 leading-6"> Upload pics
                                     </p>
@@ -201,7 +201,7 @@
                                 <div class="flex flex-1 items-center space-x-4">
                                     <!-- <a href="#">
                                         <div class="bg-gradient-to-tr from-yellow-600 to-pink-600 p-0.5 rounded-full">  
-                                            <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
+                                            <img src="{{user_profile.profileimg.url}}" class="bg-gray-200 border border-white rounded-full w-8 h-8">
                                         </div>
                                     </a> -->
                                     <span class="block font-semibold "><a href="/profile/{{post.user}}">@{{post.user}}</a></span>
@@ -295,7 +295,7 @@
                                 </div> -->
 
                                 <p>
-                                    <a href="/profile/{{post.user}}"><strong>{{post.user}}</strong></a> {{post.caption}}
+                                     {{post.caption}}
                                 </p>
 
                                 <!-- <div class="border-t pt-4 space-y-4 ">

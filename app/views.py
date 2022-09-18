@@ -24,12 +24,15 @@ def index(request):
     user_profile = Profile.objects.get(user=user_object)
     posts = Post.objects.all()
 
-    feed = []
+
+    feed = [] 
     for i in posts:
         if FollowersCount.objects.filter(user=i.user, follower=request.user.username).exists():
             feed.append(i)
-        if i.user == request.user.username:
-            feed.append(i)
+        # if i.user == request.user.username:
+        #     feed.append(i)
+
+
     # users = User.objects.all()
 
     # dict_user = model_to_dict(user_object)
