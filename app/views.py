@@ -267,4 +267,26 @@ def like_post(request):
 
 @login_required(login_url="signin")
 def search(request):
-    return render(request, "search.html")
+    current_user = User.objects.get(username=request.user.username)
+    current_user_profile = Profile.objects.get(user=current_user)
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        if User.objects.filter(username=username).exists():
+            user = User.objects.get(username=username)
+            
+            context = {
+            "user_searched": username,
+            "user_profile": current_user_profile
+            }
+            return render(request, "search.html", context)
+        else:
+            context = {
+            "user_profile": current_user_profile
+            }
+            return render(request, "search.html", context)
+    else:
+        context = {
+        "user_profile": current_user_profile
+        }
+        return render(request, "search.html", context)
