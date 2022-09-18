@@ -273,11 +273,22 @@ def search(request):
     if request.method == "POST":
         username = request.POST["username"]
         if User.objects.filter(username=username).exists():
-            user = User.objects.get(username=username)
-            
+            user = User.objects.filter(username=username)
+            user_profile = []
+
+            if len(user) == 1:
+                one_user = User.objects.get(username=username)
+                profile = Profile.objects.get(user=one_user)
+                user_profile.append(profile)
+            else:
+                for i in user:
+                    profile = Profile.objects.get(user=i)
+                    user_profile.append(profile)
+
             context = {
             "user_searched": username,
-            "user_profile": current_user_profile
+            "user_profile": current_user_profile,
+            "username_profile_list": user_profile
             }
             return render(request, "search.html", context)
         else:
