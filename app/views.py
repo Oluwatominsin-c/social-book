@@ -5,11 +5,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Profile, Post, LikePost, FollowersCount
 from django.forms.models import model_to_dict
+
 import re
 import pprintpp
 import json
+import random
+from itertools import chain
 
-# Create your views here.
+# Regex for email validation
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
 def isValid(email):
@@ -24,37 +27,51 @@ def index(request):
     user_profile = Profile.objects.get(user=user_object)
     posts = Post.objects.all()
 
-
     feed = [] 
     for i in posts:
         if FollowersCount.objects.filter(user=i.user, follower=request.user.username).exists():
             feed.append(i)
-        # if i.user == request.user.username:
-        #     feed.append(i)
+        if i.user == request.user.username:
+            feed.append(i)
 
+    # User Suggestion
+    users = User.objects.all()
+    user_following = FollowersCount.objects.filter(follower=request.user.username)
+    print(users)
+    print(user_following)
 
-    # users = User.objects.all()
+    user_following_objects = []
 
-    # dict_user = model_to_dict(user_object)
-    # dict_obj = list(map(model_to_dict, users))
-    # # print(dict_obj)
-
-    # new_users = [i for i in dict_obj if not FollowersCount.objects.filter(follower=user_object.username, user=i["username"]).exists() if i["username"] != dict_user["username"]]
-    # # pprintpp.pprint(new_users)
-
-    # follower = [len(FollowersCount.objects.filter(user=i["username"])) for i in new_users
+    for user in user_following:
+        _user = User.objects.get(username=user.user)
+        user_following_objects.append(_user)
+    print(user_following_objects)
+    user_suggestions = [x for x in list(users) if (x not in user_following_objects) and (x != user_object)]
     
-    # ]
-    # print(follower)
 
-    # new = {}
-    # for i in range(len(follower)):
-    #     new[new_users[i]["username"]] = json.dumps({"name": new_users[i]["username"], "follower": follower[i]})
-    # pprintpp.pprint(new)
+    random.shuffle(user_suggestions)
+
+    user_suggestions_ids = []
+    user_suggestion_list = []
+
+    for user in user_suggestions:
+        user_suggestions_ids.append(user.id)
+    for ids in user_suggestions_ids:
+        profiles = Profile.objects.filter(id_user=ids)
+        if profiles:
+            user_suggestion_list.append(profiles)
+    print(user_suggestions_ids)
+    print(user_suggestion_list)
+
+    suggestions_profile_list = list(chain(*user_suggestion_list))
+    print(suggestions_profile_list)
+    
+    # Shuffle user_suggestions list
 
     context = {
         "user_profile": user_profile,
-        "posts": feed
+        "posts": feed,
+        "suggestions_username_profile_list": suggestions_profile_list[:4]
         }
 
     
