@@ -7,7 +7,6 @@ from .models import Profile, Post, LikePost, FollowersCount
 from django.forms.models import model_to_dict
 
 import re
-import pprintpp
 import json
 import random
 from itertools import chain
@@ -37,15 +36,12 @@ def index(request):
     # User Suggestion
     users = User.objects.all()
     user_following = FollowersCount.objects.filter(follower=request.user.username)
-    print(users)
-    print(user_following)
 
     user_following_objects = []
 
     for user in user_following:
         _user = User.objects.get(username=user.user)
         user_following_objects.append(_user)
-    print(user_following_objects)
     user_suggestions = [x for x in list(users) if (x not in user_following_objects) and (x != user_object)]
     
 
@@ -60,11 +56,8 @@ def index(request):
         profiles = Profile.objects.filter(id_user=ids)
         if profiles:
             user_suggestion_list.append(profiles)
-    print(user_suggestions_ids)
-    print(user_suggestion_list)
 
     suggestions_profile_list = list(chain(*user_suggestion_list))
-    print(suggestions_profile_list)
     
     # Shuffle user_suggestions list
 
